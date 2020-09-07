@@ -7,4 +7,5 @@ interface StorageInterface
     public function editEntry($entry);
     public function getEntries();
     public function deleteEntry($id);
+    public function getSingleEntry($name);
 }

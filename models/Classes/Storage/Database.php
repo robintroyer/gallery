@@ -16,14 +16,25 @@ class Database implements StorageInterface
     }
     public function saveEntry($data)
     {
-        $sql = "INSERT INTO galleries (`name`)
-        VALUES ('" . $data->getName() . "')";
+        $sql = "SELECT `name`
+        FROM galleries
+        WHERE `name` = '" . $data->getName() . "'";
 
-        if ($this->conn->query($sql)) {
-            echo 'New record created successfully';
+        $result = $this->conn->query($sql);
+        if ($result->num_rows == 0) {
+            $sql = "INSERT INTO galleries (`name`, `description`)
+            VALUES ('" . $data->getName() . "', '" . $data->getDesc() . "')";
+    
+            if ($this->conn->query($sql)) {
+                echo 'New record created successfully';
+            } else {
+                echo 'Error: ' . $sql . '<br />' . $this->conn->error;
+            }
         } else {
-            echo 'Error: ' . $sql . '<br />' . $this->conn->error;
+            echo 'Diese Galerie ist bereits vorhanden.';
         }
+
+        
     }
     public function editEntry($entry)
     {
@@ -32,12 +43,16 @@ class Database implements StorageInterface
     public function getEntries()
     {
         $entries = [];
-        $sql = "SELECT `name`
+        $sql = "SELECT id, `name`, `description`
         FROM galleries";
         $result = $this->conn->query($sql);
         if ($result->num_rows > 0) {
             while ($row = $result->fetch_assoc()) {
-                $entries[] = $row['name'];
+                $entry = new Entry();
+                $entry->setID($row['id']);
+                $entry->setName($row['name']);
+                $entry->setDesc($row['description']);
+                $entries[] = $entry;
             }
         }
         return $entries;
@@ -45,5 +60,22 @@ class Database implements StorageInterface
     public function deleteEntry($id)
     {
 
+    }
+    public function getSingleEntry($name)
+    {
+        $sql = "SELECT id, `name`, `description`
+        FROM galleries
+        WHERE `name` = '$name'";
+
+        $result = $this->conn->query($sql);
+        if ($result->num_rows > 0) {
+            while ($row = $result->fetch_assoc()) {
+                $entry = new Entry();
+                $entry->setID($row['id']);
+                $entry->setName($row['name']);
+                $entry->setDesc($row['description']);
+                return $entry;
+            }
+        }
     }
 }

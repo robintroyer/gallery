@@ -1,3 +1,4 @@
+
 <!doctype html>
 <html lang="de">
     <head>
@@ -24,13 +25,14 @@
             $config = new stdClass();
             $config->storage = $storage;
             $form = new Form($config);
+            $view = new View($storage);
+
 
             $form->newGalleryForm();
 
             $entries = $storage->getEntries();
-            foreach ($entries as $entry) {
-                echo $entry . '<br />';
-            }
+            
+            $view->galleryList($entries);
 
             // $storage->a
 
