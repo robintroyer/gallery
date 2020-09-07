@@ -10,5 +10,24 @@
     </head>
     <body>
 
+        <?php
+            require __DIR__ . '/vendor/autoload.php';
+            require_once('C:/xampp/htdocs/gallery_config.php');
+
+            $form = new Form();
+            $storage = new Database();
+            $configDB = new stdClass();
+            $configDB->server = $DB_HOST;
+            $configDB->username = $DB_USER;
+            $configDB->password = $DB_PASS;
+            $configDB->database = $DB_NAME;
+            $storage->initialize($configDB);
+
+            $form->newGalleryForm();
+
+            // $storage->a
+
+        ?>
+
     </body>
 </html>
