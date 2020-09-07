@@ -28,9 +28,14 @@ class View
         echo '<h1>' . $gallery->getName() . '</h1>';
         echo '<p>' . $gallery->getDesc() . '</p>';
 
+        echo 'Neues Bild hochladen:';
+        $input_title = '<input type="text name="title"><br />';
+        $input_desc = '<textarea type="text" name="desc"></textarea><br />';
+
         $upload = '<input type="file" name="upload">';
         $upload_button = '<input type="submit" name="upload_button" value="hochladen">';
-        echo '<form method="post" enctype="multipart/form-data">' . $upload . $upload_button . '</form>';
+        echo '<form method="post" enctype="multipart/form-data">' . $input_title . $input_desc
+        . $upload . $upload_button . '</form>';
 
         if (isset($_POST['upload_button'])) {
             echo 'b';

@@ -24,6 +24,9 @@ class Filehandler
         if ($this->uploadOK) {
             if (copy($_FILES['upload']['tmp_name'], $this->file)) {
                 echo 'Die Datei ' . basename($_FILES['upload']['tmp_name']) . ' wurde hochgeladen.';
+                // echo '<br />';
+                // echo $this->file;
+
             } else {
                 echo 'Fehler beim Hochladen der Datei';
             }

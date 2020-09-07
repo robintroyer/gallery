@@ -11,10 +11,8 @@ class Database implements StorageInterface
         if ($this->conn->connect_error) {
             die('Connection failed: ' . $this->conn->connect_error);
         }
-
-        
     }
-    public function saveEntry($data)
+    public function saveGallery($data)
     {
         $sql = "SELECT `name`
         FROM galleries
@@ -36,6 +34,12 @@ class Database implements StorageInterface
 
         
     }
+
+    public function saveImage($data)
+    {
+        
+    }
+
     public function editEntry($entry)
     {
         
