@@ -27,6 +27,11 @@
 
             $form->newGalleryForm();
 
+            $entries = $storage->getEntries();
+            foreach ($entries as $entry) {
+                echo $entry . '<br />';
+            }
+
             // $storage->a
 
         ?>

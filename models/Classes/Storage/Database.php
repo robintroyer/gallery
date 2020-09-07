@@ -31,7 +31,16 @@ class Database implements StorageInterface
     }
     public function getEntries()
     {
-        
+        $entries = [];
+        $sql = "SELECT `name`
+        FROM galleries";
+        $result = $this->conn->query($sql);
+        if ($result->num_rows > 0) {
+            while ($row = $result->fetch_assoc()) {
+                $entries[] = $row['name'];
+            }
+        }
+        return $entries;
     }
     public function deleteEntry($id)
     {
