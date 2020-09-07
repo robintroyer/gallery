@@ -12,19 +12,18 @@ class Database implements StorageInterface
             die('Connection failed: ' . $this->conn->connect_error);
         }
 
-        $sql = "CREATE TABLE galleries(
-            id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-            name VARCHAR(50) NOT NULL
-        )";
-        if ($this->conn->query($sql)) {
-            echo 'Table galleries created successfully';
-        } else {
-            echo 'Error creating table ' . $this->conn->error;
-        }
+        
     }
     public function saveEntry($data)
     {
-        
+        $sql = "INSERT INTO galleries (`name`)
+        VALUES ('" . $data->getName() . "')";
+
+        if ($this->conn->query($sql)) {
+            echo 'New record created successfully';
+        } else {
+            echo 'Error: ' . $sql . '<br />' . $this->conn->error;
+        }
     }
     public function editEntry($entry)
     {

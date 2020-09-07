@@ -14,7 +14,6 @@
             require __DIR__ . '/vendor/autoload.php';
             require_once('C:/xampp/htdocs/gallery_config.php');
 
-            $form = new Form();
             $storage = new Database();
             $configDB = new stdClass();
             $configDB->server = $DB_HOST;
@@ -22,6 +21,9 @@
             $configDB->password = $DB_PASS;
             $configDB->database = $DB_NAME;
             $storage->initialize($configDB);
+            $config = new stdClass();
+            $config->storage = $storage;
+            $form = new Form($config);
 
             $form->newGalleryForm();
 
