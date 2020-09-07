@@ -7,7 +7,8 @@ interface StorageInterface
     public function saveGallery($data);
     public function saveImage($data);
     public function editEntry($entry);
-    public function getEntries();
+    public function getGalleries();
+    public function getImages($id);
     public function deleteEntry($id);
     public function getSingleEntry($name);
 }

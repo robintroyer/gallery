@@ -37,14 +37,20 @@ class Database implements StorageInterface
 
     public function saveImage($data)
     {
-        
+        $sql = "INSERT INTO images (gallery_id, title, `description`, image_path)
+        VALUES ('" . $data->getGalleryID() . "', '" . $data->getTitle() . "', '" . $data->getDesc() . "', '" . $data->getImage() . "')";
+        if ($this->conn->query($sql)) {
+            echo 'New record created successfully';
+        } else {
+            echo 'Error: ' . $sql . '<br />' . $this->conn_error;
+        }
     }
 
     public function editEntry($entry)
     {
         
     }
-    public function getEntries()
+    public function getGalleries()
     {
         $entries = [];
         $sql = "SELECT id, `name`, `description`
@@ -60,6 +66,25 @@ class Database implements StorageInterface
             }
         }
         return $entries;
+    }
+    public function getImages($id)
+    {
+        $images = [];
+        $sql = "SELECT id, gallery_id, title, `description`, image_path
+        FROM images
+        WHERE gallery_id = '" . $id . "'";
+        $result = $this->conn->query($sql);
+        if ($result->num_rows > 0) {
+            while ($row = $result->fetch_assoc()) {
+                $image = new Image();
+                $image->setGalleryID($row['gallery_id']);
+                $image->setTitle($row['title']);
+                $image->setDesc($row['description']);
+                $image->setImage($row['image_path']);
+                $images[] = $image;
+            }
+        }
+        return $images;
     }
     public function deleteEntry($id)
     {

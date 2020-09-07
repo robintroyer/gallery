@@ -23,4 +23,21 @@ class Form {
             }          
         }
     }
+    public function newImageForm($gallery_id)
+    {
+        echo 'Neues Bild hochladen:';
+        $input_title = '<input type="text" name="title"><br />';
+        $input_desc = '<textarea type="text" name="desc"></textarea><br />';
+        $input_gallery_id = '<input type="hidden" name="gallery_id" value="' . $gallery_id . '">';
+
+        $upload = '<input type="file" name="upload">';
+        $upload_button = '<input type="submit" name="upload_button" value="hochladen">';
+        echo '<form method="post" enctype="multipart/form-data">' . $input_title . $input_desc
+        . $input_gallery_id . $upload . $upload_button . '</form>';
+
+        if (isset($_POST['upload_button'])) {
+            $filehandler = new Filehandler($this->storage);
+            $filehandler->uploadFile();
+        }
+    }
 }

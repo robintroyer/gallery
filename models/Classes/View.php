@@ -3,10 +3,12 @@
 class View
 {
     private $storage;
+    private $form;
 
-    public function __construct($storage)
+    public function __construct($storage, $form)
     {
         $this->storage = $storage;
+        $this->form = $form;
     }
     public function galleryList($entries)
     {
@@ -28,19 +30,14 @@ class View
         echo '<h1>' . $gallery->getName() . '</h1>';
         echo '<p>' . $gallery->getDesc() . '</p>';
 
-        echo 'Neues Bild hochladen:';
-        $input_title = '<input type="text name="title"><br />';
-        $input_desc = '<textarea type="text" name="desc"></textarea><br />';
-
-        $upload = '<input type="file" name="upload">';
-        $upload_button = '<input type="submit" name="upload_button" value="hochladen">';
-        echo '<form method="post" enctype="multipart/form-data">' . $input_title . $input_desc
-        . $upload . $upload_button . '</form>';
-
-        if (isset($_POST['upload_button'])) {
-            echo 'b';
-            $filehandler = new Filehandler($this->storage);
-            $filehandler->uploadFile();
+        $this->form->newImageForm($gallery->getID());
+        $images = $this->storage->getImages($gallery->getID());
+        foreach ($images as $image) {
+            // echo $image->getImage() . '<br />';
+            // echo '.' . substr($image->getImage(), 23) . '<br />';
+            // print_r($image);
+            // echo '<img src="' . $image->getImage() . '">';
+            echo '<img class="gallery-image" src=".' . substr($image->getImage(), 23) . '">';
         }
     }
 }

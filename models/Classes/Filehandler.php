@@ -26,7 +26,12 @@ class Filehandler
                 echo 'Die Datei ' . basename($_FILES['upload']['tmp_name']) . ' wurde hochgeladen.';
                 // echo '<br />';
                 // echo $this->file;
-
+                $image = new Image();
+                $image->setGalleryID($_POST['gallery_id']);
+                $image->setTitle($_POST['title']);
+                $image->setDesc($_POST['desc']);
+                $image->setImage($this->file);
+                $this->storage->saveImage($image);
             } else {
                 echo 'Fehler beim Hochladen der Datei';
             }
