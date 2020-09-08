@@ -89,7 +89,11 @@ class View
             $this->form->showEditGalleryForm($gallery);
         }
         if (isset($_POST['delete_gallery_button'])) {
-            $this->storage->deleteGallery($gallery->getID());
+            if ($_SESSION['login'] == 1) {
+                $this->storage->deleteGallery($gallery->getID());
+            } else {
+                echo 'Sie müssen eingeloggt sein um Änderungen vornehmen zu können.';
+            }
         }
         $images = $this->showImagesDropdown($gallery->getID());
         echo '
@@ -120,7 +124,11 @@ class View
             $this->form->showEditImageForm($gallery->getID(), $images, $_POST['image_id']);
         }
         if (isset($_POST['delete_image'])) {
-            $this->storage->deleteImage($_POST['image_id']);
+            if ($_SESSION['login'] == 1) {
+                $this->storage->deleteImage($_POST['image_id']);
+            } else {
+                $this->storage->deleteGallery($gallery->getID());
+            }
         }
     }
     
