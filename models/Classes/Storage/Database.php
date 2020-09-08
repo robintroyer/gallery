@@ -46,9 +46,38 @@ class Database implements StorageInterface
         }
     }
 
-    public function editEntry($entry)
+    public function editGallery($gallery)
     {
-        
+        $sql = "UPDATE galleries
+        SET name = '" . $gallery->getName() . "',
+        `description` = '" . $gallery->getDesc() . "'
+        WHERE id = '" . $gallery->getID() . "'";
+        if ($this->conn->query($sql)) {
+            echo 'Record updated successfully';
+        } else {
+            echo 'Error updating record';
+        }
+    }
+    public function editImage($image)
+    {
+        if (!empty($image->getImage())) {
+            $sql = "UPDATE images
+            SET title = '" . $image->getTitle() . "',
+            `description` = '" . $image->getDesc() . "',
+            image_path = '" . $image->getImage() . "'
+            WHERE id = '" . $image->getID() . "'";
+        } else {
+            $sql = "UPDATE images
+            SET title = '" . $image->getTitle() . "',
+            `description` = '" . $image->getDesc() . "'
+            WHERE id = '" . $image->getID() . "'";
+        }
+
+        if ($this->conn->query($sql)) {
+            echo 'Record updated successfully';
+        } else {
+            echo 'Error updating record';
+        }
     }
     public function getGalleries()
     {
@@ -67,16 +96,17 @@ class Database implements StorageInterface
         }
         return $entries;
     }
-    public function getImages($id)
+    public function getImages($gallery_id)
     {
         $images = [];
         $sql = "SELECT id, gallery_id, title, `description`, image_path
         FROM images
-        WHERE gallery_id = '" . $id . "'";
+        WHERE gallery_id = '" . $gallery_id . "'";
         $result = $this->conn->query($sql);
         if ($result->num_rows > 0) {
             while ($row = $result->fetch_assoc()) {
                 $image = new Image();
+                $image->setID($row['id']);
                 $image->setGalleryID($row['gallery_id']);
                 $image->setTitle($row['title']);
                 $image->setDesc($row['description']);
@@ -86,9 +116,13 @@ class Database implements StorageInterface
         }
         return $images;
     }
-    public function deleteEntry($id)
+    public function deleteGallery($gallery_id)
     {
-
+        
+    }
+    public function deleteImage($image_id)
+    {
+        
     }
     public function getSingleEntry($name)
     {

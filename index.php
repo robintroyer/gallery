@@ -40,6 +40,20 @@
             $view->galleryList($entries);
 
             // $storage->a
+            // print_r($_POST);
+            if (isset($_POST['edit_button'])) {
+                $filehandler = new Filehandler($storage);
+                $filehandler->editFile();
+            }
+            if (isset($_POST['submit_edit_gallery_button'])) {
+                // $this->storage->editGallery();
+                $gallery = new Entry();
+                $gallery->setID($_POST['edit_gallery_id']);
+                $gallery->setName($_POST['edit_gallery_name']);
+                $gallery->setDesc($_POST['edit_gallery_desc']);
+                $storage->editGallery($gallery);
+            }
+
 
         ?>
 

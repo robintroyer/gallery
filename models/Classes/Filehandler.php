@@ -11,13 +11,29 @@ class Filehandler
     {
         $this->storage = $storage;
         $this->dir = 'C:/xampp/htdocs/gallery/images/';
-        $this->file = $this->dir . basename($_FILES['upload']['name']);
-        $this->extension = strtolower(pathinfo($this->file, PATHINFO_EXTENSION));
-        if (getimagesize($_FILES['upload']['tmp_name']) === false) {
-            $this->uploadOK = 0;
-        } else {
-            $this->uploadOK = 1;
+        if (isset($_FILES['upload'])) {
+            $this->file = $this->dir . basename($_FILES['upload']['name']);
+            if (getimagesize($_FILES['upload']['tmp_name']) === false) {
+                $this->uploadOK = 0;
+            } else {
+                $this->uploadOK = 1;
+            }
         }
+        if (isset($_FILES['edit_upload'])) {
+            $this->file = $this->dir . basename($_FILES['edit_upload']['name']);
+            if ($_FILES['edit_upload']['error'] == 4) {
+                $this->uploadOK = 1;
+            } else {
+                if (getimagesize($_FILES['edit_upload']['tmp_name']) === false) {
+                    $this->uploadOK = 0;
+                } else {
+                    $this->uploadOK = 1;
+                }
+            }
+            
+        }
+        $this->extension = strtolower(pathinfo($this->file, PATHINFO_EXTENSION));
+        
     }
     public function uploadFile()
     {
@@ -37,6 +53,39 @@ class Filehandler
             }
         } else {
             echo 'Bitte laden Sie ein Bild hoch';
+        }
+    }
+
+    public function editFile()
+    {
+        echo 'U';
+        if ($_FILES['edit_upload']['error'] == 4) {
+            $image = new Image();
+            echo $_POST['edit_id'];
+            $image->setID($_POST['edit_id']);
+            $image->setGalleryID($_POST['edit_gallery_id']);
+            $image->setTitle($_POST['edit_title']);
+            $image->setDesc($_POST['edit_desc']);
+            print_r($image);
+            $this->storage->editImage($image);
+        } else {
+            if ($this->uploadOK) {
+                if (copy($_FILES['edit_upload']['tmp_name'], $this->file)) {
+                    $image = new Image();
+                    echo $_POST['edit_id'];
+                    $image->setID($_POST['edit_id']);
+                    $image->setGalleryID($_POST['edit_gallery_id']);
+                    $image->setTitle($_POST['edit_title']);
+                    $image->setDesc($_POST['edit_desc']);
+                    $image->setImage($this->file);
+                    print_r($image);
+                    $this->storage->editImage($image);
+                } else {
+                    echo 'Fehler beim Hochladen der Datei';
+                }
+            } else {
+                echo 'Bitte laden Sie nur Bilder hoch';
+            }
         }
     }
 }
