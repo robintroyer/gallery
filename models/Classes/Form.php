@@ -13,12 +13,15 @@ class Form {
         echo '<h1>Neue Galerie anlegen:</h1>';
         echo '<form method="post">' . $input_name . $input_desc . $new_gallery_button . '</form>';
         if (isset($_POST['gallery_name'])) {
-            if (!empty($_POST['gallery_name'])) {
-                $entry = new Entry();
-                $entry->setName($_POST['gallery_name']);
-                $entry->setDesc($_POST['gallery_desc']);
-                print_r($entry);
-                $this->storage->saveGallery($entry);
+            if ($_SESSION['login'] == 1) {
+                if (!empty($_POST['gallery_name'])) {
+                    $entry = new Entry();
+                    $entry->setName($_POST['gallery_name']);
+                    $entry->setDesc($_POST['gallery_desc']);
+                    $this->storage->saveGallery($entry);
+                }
+            } else {
+                echo 'Sie müssen eingeloggt sein um Änderungen vornehmen zu können.';
             }          
         }
     }

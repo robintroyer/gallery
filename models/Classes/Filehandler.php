@@ -59,7 +59,6 @@ class Filehandler
             $image->setGalleryID($_POST['edit_gallery_id']);
             $image->setTitle($_POST['edit_title']);
             $image->setDesc($_POST['edit_desc']);
-            print_r($image);
             $this->storage->editImage($image);
         } else {
             if ($this->uploadOK) {
@@ -71,7 +70,6 @@ class Filehandler
                     $image->setTitle($_POST['edit_title']);
                     $image->setDesc($_POST['edit_desc']);
                     $image->setImage($this->file);
-                    print_r($image);
                     $this->storage->editImage($image);
                 } else {
                     echo 'Fehler beim Hochladen der Datei';

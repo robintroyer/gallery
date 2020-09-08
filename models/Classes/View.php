@@ -32,7 +32,6 @@ class View
         echo '</form>';
 
         $sorted_galleries = $this->storage->getGalleries($this->order);
-        print_r($sorted_galleries);
         return $sorted_galleries;
     }
     
@@ -124,4 +123,5 @@ class View
             $this->storage->deleteImage($_POST['image_id']);
         }
     }
+    
 }
