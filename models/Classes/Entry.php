@@ -1,5 +1,4 @@
 <?php
-
 class Entry
 {
     protected $id;

@@ -1,5 +1,4 @@
 <?php
-
 class Form {
     private $storage;
     public function __construct($config)
@@ -11,7 +10,6 @@ class Form {
         $input_name = '<input type="text" name="gallery_name"><br />';
         $input_desc = '<textarea type="text" name="gallery_desc"></textarea><br />';
         $new_gallery_button = '<input type="submit" name="new_gallery_button" value="Senden">';
-
         echo '<h1>Neue Galerie anlegen:</h1>';
         echo '<form method="post">' . $input_name . $input_desc . $new_gallery_button . '</form>';
         if (isset($_POST['gallery_name'])) {
@@ -30,12 +28,10 @@ class Form {
         $input_title = '<input type="text" name="title"><br />';
         $input_desc = '<textarea type="text" name="desc"></textarea><br />';
         $input_gallery_id = '<input type="hidden" name="gallery_id" value="' . $gallery_id . '">';
-
         $upload = '<input type="file" name="upload">';
         $upload_button = '<input type="submit" name="upload_button" value="hochladen">';
         echo '<form method="post" enctype="multipart/form-data">' . $input_title . $input_desc
         . $input_gallery_id . $upload . $upload_button . '</form>';
-
         if (isset($_POST['upload_button'])) {
             $filehandler = new Filehandler($this->storage);
             $filehandler->uploadFile();
@@ -51,21 +47,15 @@ class Form {
         $edit_button = '<input type="submit" name="submit_edit_gallery_button">';
         echo '<form method="post" enctype="multipart/form-data">' . $input_title . $input_desc
         . $input_gallery_id . $hidden_input . $edit_button . '</form>';
-
-        // if (isset($_POST['submit_edit_gallery_button'])) {
-        //     echo 'V';
-        // }
     }
     public function showEditImageForm($gallery_id, $images, $id)
     {
         $image = $images[$id - 1];
-
         echo 'Bild bearbeiten:';
         $input_title = '<input type="text" name="edit_title" value="' . $image->getTitle() . '"><br />';
         $input_desc = '<textarea type="text" name="edit_desc">' . $image->getDesc() . '</textarea><br />';
         $input_id = '<input type="hidden" name="edit_id" value="' . $image->getID() . '">';
         $input_gallery_id = '<input type="hidden" name="edit_gallery_id" value="' . $gallery_id . '">';
-
         $upload = '<input type="file" name="edit_upload" value="' . $image->getImage() . '">';
         $edit_button = '<input type="submit" name="edit_button" value="hochladen">';
         echo '<form method="post" enctype="multipart/form-data">' . $input_title . $input_desc

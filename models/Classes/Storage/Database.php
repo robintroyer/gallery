@@ -1,5 +1,4 @@
 <?php
-
 class Database implements StorageInterface
 {
     private $conn;
@@ -17,12 +16,10 @@ class Database implements StorageInterface
         $sql = "SELECT `name`
         FROM galleries
         WHERE `name` = '" . $data->getName() . "'";
-
         $result = $this->conn->query($sql);
         if ($result->num_rows == 0) {
             $sql = "INSERT INTO galleries (`name`, `description`)
             VALUES ('" . $data->getName() . "', '" . $data->getDesc() . "')";
-    
             if ($this->conn->query($sql)) {
                 echo 'New record created successfully';
             } else {
@@ -31,10 +28,7 @@ class Database implements StorageInterface
         } else {
             echo 'Diese Galerie ist bereits vorhanden.';
         }
-
-        
     }
-
     public function saveImage($data)
     {
         $sql = "INSERT INTO images (gallery_id, title, `description`, image_path)
@@ -45,7 +39,6 @@ class Database implements StorageInterface
             echo 'Error: ' . $sql . '<br />' . $this->conn_error;
         }
     }
-
     public function editGallery($gallery)
     {
         $sql = "UPDATE galleries
@@ -72,7 +65,6 @@ class Database implements StorageInterface
             `description` = '" . $image->getDesc() . "'
             WHERE id = '" . $image->getID() . "'";
         }
-
         if ($this->conn->query($sql)) {
             echo 'Record updated successfully';
         } else {
@@ -126,6 +118,7 @@ class Database implements StorageInterface
         } else {
             echo 'Error deleting record: ' . $this->conn->error;
         }
+        echo '<script type="text/javascript">window.location="http://localhost/gallery/";</script>';
     }
     public function deleteImage($image_id)
     {
@@ -143,7 +136,6 @@ class Database implements StorageInterface
         $sql = "SELECT id, `name`, `description`
         FROM galleries
         WHERE `name` = '$name'";
-
         $result = $this->conn->query($sql);
         if ($result->num_rows > 0) {
             while ($row = $result->fetch_assoc()) {

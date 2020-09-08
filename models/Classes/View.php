@@ -1,10 +1,8 @@
 <?php
-
 class View
 {
     private $storage;
     private $form;
-
     public function __construct($storage, $form)
     {
         $this->storage = $storage;
@@ -16,36 +14,29 @@ class View
         echo '<form method="get">';
         foreach ($entries as $entry) {
             $button = '<input type="submit" name="galerie" value="' . $entry->getName() . '">';
-            
             echo $button;
             echo '<br />';
         }
         echo '</form>';
-
         if (isset($_GET['galerie'])) {
             $this->showGallery($this->storage->getSingleEntry($_GET['galerie']));
         }
         
     }
-
     private function showGallery($gallery)
     {
         echo '<h1>' . $gallery->getName() . '</h1>';
         echo '<p>' . $gallery->getDesc() . '</p>';
-
         $this->form->newImageForm($gallery->getID());
         $edit_button = '<input type="submit" name="edit_gallery_button" value="Bearbeiten">';
         $delete_button = '<input type="submit" name="delete_gallery_button" value="Löschen">';
         echo '<form method="post">' . $edit_button . $delete_button . '</form>';
-
         if (isset($_POST['edit_gallery_button'])) {
             $this->form->showEditGalleryForm($gallery);
         }
-
         if (isset($_POST['delete_gallery_button'])) {
             $this->storage->deleteGallery($gallery->getID());
         }
-
         $images = $this->storage->getImages($gallery->getID());
         echo '
         <div class="album py-5 bg-light">
@@ -71,11 +62,7 @@ class View
                 </div>
             </div>
         </div>';
-
-
         if (isset($_POST['edit_image'])) {
-            // echo $_POST['image_id'];
-            // echo $image->getID();
             $this->form->showEditImageForm($gallery->getID(), $images, $_POST['image_id']);
         }
         if (isset($_POST['delete_image'])) {

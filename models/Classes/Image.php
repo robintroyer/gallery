@@ -1,5 +1,4 @@
 <?php
-
 class Image
 {
     protected $id;
@@ -7,7 +6,6 @@ class Image
     protected $title;
     protected $desc;
     protected $image;
-    
     public function setID($id)
     {
         $this->id = $id;
@@ -48,5 +46,4 @@ class Image
     {
         return $this->image;
     }
-
 }

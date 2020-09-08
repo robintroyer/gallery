@@ -1,10 +1,8 @@
 <?php
-
 class Filehandler
 {
     private $storage;
     private $dir;
-    private $extension;
     private $file;
     private $uploadOK;
     public function __construct($storage)
@@ -32,16 +30,12 @@ class Filehandler
             }
             
         }
-        $this->extension = strtolower(pathinfo($this->file, PATHINFO_EXTENSION));
-        
     }
     public function uploadFile()
     {
         if ($this->uploadOK) {
             if (copy($_FILES['upload']['tmp_name'], $this->file)) {
                 echo 'Die Datei ' . basename($_FILES['upload']['tmp_name']) . ' wurde hochgeladen.';
-                // echo '<br />';
-                // echo $this->file;
                 $image = new Image();
                 $image->setGalleryID($_POST['gallery_id']);
                 $image->setTitle($_POST['title']);
@@ -58,7 +52,6 @@ class Filehandler
 
     public function editFile()
     {
-        echo 'U';
         if ($_FILES['edit_upload']['error'] == 4) {
             $image = new Image();
             echo $_POST['edit_id'];
