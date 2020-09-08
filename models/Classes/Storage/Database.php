@@ -118,11 +118,25 @@ class Database implements StorageInterface
     }
     public function deleteGallery($gallery_id)
     {
-        
+        $sql = "DELETE
+        FROM galleries
+        WHERE id = '$gallery_id'";
+        if ($this->conn->query($sql)) {
+            echo 'Record deleted successfully';
+        } else {
+            echo 'Error deleting record: ' . $this->conn->error;
+        }
     }
     public function deleteImage($image_id)
     {
-        
+        $sql = "DELETE
+        FROM images
+        WHERE id = '$image_id'";
+        if ($this->conn->query($sql)) {
+            echo 'Record deleted successfully';
+        } else {
+            echo 'Error deleting record: ' . $this->conn->error;
+        }
     }
     public function getSingleEntry($name)
     {

@@ -42,6 +42,10 @@ class View
             $this->form->showEditGalleryForm($gallery);
         }
 
+        if (isset($_POST['delete_gallery_button'])) {
+            $this->storage->deleteGallery($gallery->getID());
+        }
+
         $images = $this->storage->getImages($gallery->getID());
         echo '
         <div class="album py-5 bg-light">
@@ -73,6 +77,9 @@ class View
             // echo $_POST['image_id'];
             // echo $image->getID();
             $this->form->showEditImageForm($gallery->getID(), $images, $_POST['image_id']);
+        }
+        if (isset($_POST['delete_image'])) {
+            $this->storage->deleteImage($_POST['image_id']);
         }
     }
 }

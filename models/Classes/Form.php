@@ -20,7 +20,7 @@ class Form {
                 $entry->setName($_POST['gallery_name']);
                 $entry->setDesc($_POST['gallery_desc']);
                 print_r($entry);
-                $this->storage->saveEntry($entry);
+                $this->storage->saveGallery($entry);
             }          
         }
     }
