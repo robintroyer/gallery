@@ -96,12 +96,21 @@ class Database implements StorageInterface
         }
         return $entries;
     }
-    public function getImages($gallery_id)
+    public function getImages($gallery_id, $order)
     {
+        if ($order == 0) {
+            $sql = "SELECT id, gallery_id, title, `description`, image_path
+            FROM images
+            WHERE gallery_id = '" . $gallery_id . "'
+            ORDER BY title ASC";
+        } elseif ($order == 1) {
+            $sql = "SELECT id, gallery_id, title, `description`, image_path
+            FROM images
+            WHERE gallery_id = '" . $gallery_id . "'
+            ORDER BY title DESC";
+        }
         $images = [];
-        $sql = "SELECT id, gallery_id, title, `description`, image_path
-        FROM images
-        WHERE gallery_id = '" . $gallery_id . "'";
+        
         $result = $this->conn->query($sql);
         if ($result->num_rows > 0) {
             while ($row = $result->fetch_assoc()) {

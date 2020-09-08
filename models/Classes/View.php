@@ -4,6 +4,7 @@ class View
     private $storage;
     private $form;
     private $order;
+    private $images_order;
     public function __construct($storage, $form)
     {
         $this->storage = $storage;
@@ -51,6 +52,32 @@ class View
             $this->showGallery($this->storage->getSingleEntry($_GET['galerie']));
         }
     }
+    private function showImagesDropdown($gallery_id)
+    {
+        if (isset($_POST['images'])) {
+            $this->images_order = $_POST['images'];
+            echo $this->images_order;
+        }
+        $sorting = ['A-Z', 'Z-A'];
+        echo '<form method="post" name="sort">';
+        echo '<label for="order">Sortierung:&nbsp</label>';
+        echo '<select name="images">';
+        for ($i = 0; $i < count($sorting); $i++) {
+            if ($i == $this->order) {
+                echo '<option selected="selected" value="' . $i . '">' . $sorting[$i] . '</option>';
+            } else {
+                echo '<option value="' . $i . '">' . $sorting[$i] . '</option>';
+            }
+        }
+        echo '</select>';
+        echo '<input type="submit" value="Sortieren" name="sort_galleries">';
+        echo '</form>';
+
+        // $sorted_galleries = $this->storage->getGalleries($this->order);
+        $sorted_images = $this->storage->getImages($gallery_id, $this->images_order);
+        // print_r($sorted_images);
+        return $sorted_images;
+    }
     private function showGallery($gallery)
     {
         echo '<h1>' . $gallery->getName() . '</h1>';
@@ -65,7 +92,8 @@ class View
         if (isset($_POST['delete_gallery_button'])) {
             $this->storage->deleteGallery($gallery->getID());
         }
-        $images = $this->storage->getImages($gallery->getID());
+        // $images = $this->storage->getImages($gallery->getID());
+        $images = $this->showImagesDropdown($gallery->getID());
         echo '
         <div class="album py-5 bg-light">
             <div class="container">
