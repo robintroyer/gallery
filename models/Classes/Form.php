@@ -53,7 +53,17 @@ class Form {
     }
     public function showEditImageForm($gallery_id, $images, $id)
     {
-        $image = $images[$id - 1];
+        print_r($images);
+        // $image = $images[$id - 1];
+
+        foreach ($images as $image) {
+            if ($id == $image->getID()) {
+                $needed_image = $image;
+                break;
+            }
+        }
+        $image = $needed_image;
+
         echo 'Bild bearbeiten:';
         $input_title = '<input type="text" name="edit_title" value="' . $image->getTitle() . '"><br />';
         $input_desc = '<textarea type="text" name="edit_desc">' . $image->getDesc() . '</textarea><br />';
