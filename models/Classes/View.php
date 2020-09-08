@@ -3,17 +3,46 @@ class View
 {
     private $storage;
     private $form;
+    private $order;
     public function __construct($storage, $form)
     {
         $this->storage = $storage;
         $this->form = $form;
     }
-    public function galleryList($entries)
+    private function showGalleryDropdown($galleries)
     {
+        if (isset($_POST['galleries'])) {
+            $this->order = $_POST['galleries'];
+            echo $this->order;
+        }
+        $sorting = ['A-Z', 'Z-A'];
+        echo '<form method="post" name="sort">';
+        echo '<label for="order">Sortierung:&nbsp</label>';
+        echo '<select name="galleries">';
+        for ($i = 0; $i < count($sorting); $i++) {
+            if ($i == $this->order) {
+                echo '<option selected="selected" value="' . $i . '">' . $sorting[$i] . '</option>';
+            } else {
+                echo '<option value="' . $i . '">' . $sorting[$i] . '</option>';
+            }
+        }
+        echo '</select>';
+        echo '<input type="submit" value="Sortieren" name="sort_galleries">';
+        echo '</form>';
+
+        $sorted_galleries = $this->storage->getGalleries($this->order);
+        print_r($sorted_galleries);
+        return $sorted_galleries;
+    }
+    
+
+    public function galleryList($galleries)
+    {
+        $sorted_galleries = $this->showGalleryDropdown($galleries);
         echo '<br />';
         echo '<form method="get">';
-        foreach ($entries as $entry) {
-            $button = '<input type="submit" name="galerie" value="' . $entry->getName() . '">';
+        foreach ($sorted_galleries as $gallery) {
+            $button = '<input type="submit" name="galerie" value="' . $gallery->getName() . '">';
             echo $button;
             echo '<br />';
         }
@@ -21,7 +50,6 @@ class View
         if (isset($_GET['galerie'])) {
             $this->showGallery($this->storage->getSingleEntry($_GET['galerie']));
         }
-        
     }
     private function showGallery($gallery)
     {

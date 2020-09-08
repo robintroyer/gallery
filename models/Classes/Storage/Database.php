@@ -71,11 +71,19 @@ class Database implements StorageInterface
             echo 'Error updating record';
         }
     }
-    public function getGalleries()
+    public function getGalleries($order)
     {
+        if ($order == 0) {
+            $sql = "SELECT id, `name`, `description`
+            FROM galleries
+            ORDER BY `name` ASC";
+        } elseif ($order == 1) {
+            $sql = "SELECT id, `name`, `description`
+            FROM galleries
+            ORDER BY `name` DESC";
+        }
         $entries = [];
-        $sql = "SELECT id, `name`, `description`
-        FROM galleries";
+        
         $result = $this->conn->query($sql);
         if ($result->num_rows > 0) {
             while ($row = $result->fetch_assoc()) {

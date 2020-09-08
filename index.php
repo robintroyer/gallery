@@ -26,7 +26,7 @@
             $form = new Form($config);
             $view = new View($storage, $form);
             $form->newGalleryForm();
-            $entries = $storage->getGalleries();
+            $entries = $storage->getGalleries(0);
             $view->galleryList($entries);
             if (isset($_POST['edit_button'])) {
                 $filehandler = new Filehandler($storage);
