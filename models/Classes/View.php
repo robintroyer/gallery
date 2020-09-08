@@ -10,7 +10,7 @@ class View
         $this->storage = $storage;
         $this->form = $form;
     }
-    private function showGalleryDropdown($galleries)
+    private function showGalleryDropdown()
     {
         if (isset($_POST['galleries'])) {
             $this->order = $_POST['galleries'];
@@ -39,6 +39,8 @@ class View
 
     public function galleryList($galleries)
     {
+        
+
         $sorted_galleries = $this->showGalleryDropdown($galleries);
         echo '<br />';
         echo '<form method="get">';
@@ -73,9 +75,7 @@ class View
         echo '<input type="submit" value="Sortieren" name="sort_galleries">';
         echo '</form>';
 
-        // $sorted_galleries = $this->storage->getGalleries($this->order);
         $sorted_images = $this->storage->getImages($gallery_id, $this->images_order);
-        // print_r($sorted_images);
         return $sorted_images;
     }
     private function showGallery($gallery)
@@ -92,7 +92,6 @@ class View
         if (isset($_POST['delete_gallery_button'])) {
             $this->storage->deleteGallery($gallery->getID());
         }
-        // $images = $this->storage->getImages($gallery->getID());
         $images = $this->showImagesDropdown($gallery->getID());
         echo '
         <div class="album py-5 bg-light">

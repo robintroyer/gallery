@@ -14,6 +14,11 @@
         <?php
             require __DIR__ . '/vendor/autoload.php';
             require_once('C:/xampp/htdocs/gallery_config.php');
+            session_start();
+            if (!isset($_SESSION['login'])) {
+                $_SESSION['login'] = 0;
+            }
+            print_r($_SESSION);
             $storage = new Database();
             $configDB = new stdClass();
             $configDB->server = $DB_HOST;
