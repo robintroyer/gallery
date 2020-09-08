@@ -32,12 +32,24 @@ class View
 
         $this->form->newImageForm($gallery->getID());
         $images = $this->storage->getImages($gallery->getID());
+        echo '
+        <div class="album py-5 bg-light">
+            <div class="container">
+                <div class="row">';
         foreach ($images as $image) {
-            // echo $image->getImage() . '<br />';
-            // echo '.' . substr($image->getImage(), 23) . '<br />';
-            // print_r($image);
-            // echo '<img src="' . $image->getImage() . '">';
-            echo '<img class="gallery-image" src=".' . substr($image->getImage(), 23) . '">';
+            echo '
+            <div class="card" style="width: 18rem;">
+                <img height="200px" src=".' . substr($image->getImage(), 23) . '" class="card-img-top" alt="'
+                . $image->getTitle() . '">
+                <div class="card-body">
+                    <h4>' . $image->getTitle() . '</h4>
+                    <p class="card-text">' . $image->getDesc() . '</p>
+                </div>
+            </div>';
         }
+        echo '
+                </div>
+            </div>
+        </div>';
     }
 }

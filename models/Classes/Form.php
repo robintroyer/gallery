@@ -12,6 +12,7 @@ class Form {
         $input_desc = '<textarea type="text" name="gallery_desc"></textarea><br />';
         $new_gallery_button = '<input type="submit" name="new_gallery_button" value="Senden">';
 
+        echo '<h1>Neue Galerie anlegen:</h1>';
         echo '<form method="post">' . $input_name . $input_desc . $new_gallery_button . '</form>';
         if (isset($_POST['gallery_name'])) {
             if (!empty($_POST['gallery_name'])) {
