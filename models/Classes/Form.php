@@ -36,8 +36,13 @@ class Form {
         echo '<form method="post" enctype="multipart/form-data">' . $input_title . $input_desc
         . $input_gallery_id . $upload . $upload_button . '</form>';
         if (isset($_POST['upload_button'])) {
-            $filehandler = new Filehandler($this->storage);
-            $filehandler->uploadFile();
+            if ($_SESSION['login'] == 1) {
+                $filehandler = new Filehandler($this->storage);
+                $filehandler->uploadFile();
+            } else {
+                echo 'Sie müssen eingeloggt sein um Änderungen vornehmen zu können.';
+            }
+            
         }
     }
     public function showEditGalleryForm($gallery)
@@ -54,7 +59,6 @@ class Form {
     public function showEditImageForm($gallery_id, $images, $id)
     {
         print_r($images);
-        // $image = $images[$id - 1];
 
         foreach ($images as $image) {
             if ($id == $image->getID()) {

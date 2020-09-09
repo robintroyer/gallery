@@ -79,6 +79,7 @@ class View
     }
     private function showGallery($gallery)
     {
+        ob_start();
         echo '<h1>' . $gallery->getName() . '</h1>';
         echo '<p>' . $gallery->getDesc() . '</p>';
         $this->form->newImageForm($gallery->getID());
@@ -111,6 +112,7 @@ class View
                         <p class="card-text">' . $image->getDesc() . '</p>
                         <input type="hidden" value="' . $image->getID() . '" name="image_id">
                         <input type="submit" value="Bearbeiten" name="edit_image">
+                        <input type="hidden" value="' . $image->getImage() . '" name="image_to_delete">
                         <input type="submit" value="Löschen" name="delete_image">
                     </div>
                 </div>
@@ -124,12 +126,23 @@ class View
             $this->form->showEditImageForm($gallery->getID(), $images, $_POST['image_id']);
         }
         if (isset($_POST['delete_image'])) {
+            unset($_POST['delete_image']);
             if ($_SESSION['login'] == 1) {
+                $files = scandir('C:/xampp/htdocs/gallery/images');
+                foreach ($files as $file) {
+                    $file = 'C:/xampp/htdocs/gallery/images/' . $file;
+                    echo $file . '<br />';
+                    // echo $image->getImage() . '<br />';
+                    if ($file == $_POST['image_to_delete']) {
+                        unlink($file);
+                    }
+                }
                 $this->storage->deleteImage($_POST['image_id']);
+                ob_end_clean();
+                $this->showGallery($gallery);
             } else {
-                $this->storage->deleteGallery($gallery->getID());
+                echo 'Sie müssen eingeloggt sein um Änderungen vornehmen zu können.';
             }
         }
-    }
-    
+    }  
 }
