@@ -9,8 +9,12 @@
 
     echo '<form method="post"><input type="submit" name="guest" value="Gastzugang"></form>';
 
+
     $username = 'robin_troyer';
     $password = 'RT123';
+    echo '<br />';
+    echo 'Benutzername: ' . $username . '<br />';
+    echo 'Passwort: ' . $password;
     
     if (
         isset($_POST['username'])
