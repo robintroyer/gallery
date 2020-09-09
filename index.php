@@ -17,7 +17,11 @@
             if (!isset($_SESSION['login'])) {
                 $_SESSION['login'] = 0;
             }
+            
             echo '<form method="post"><input type="submit" value="Ausloggen" name="logout"></form>';
+            if ($_SESSION['login'] == 0) {
+                echo 'Gastzugang';
+            }
             if (isset($_POST['logout'])) {
                 unset($_SESSION['login']);
                 header('location:http://localhost/gallery/login.php');
@@ -33,34 +37,29 @@
             $config->storage = $storage;
             $form = new Form($config);
             $view = new View($storage, $form);
-            $form->newGalleryForm();
+            if ($_SESSION['login'] == 1) {
+                $form->newGalleryForm();
+            }
+            // $form->newGalleryForm();
             $entries = $storage->getGalleries(0);
             if (isset($_POST['edit_button'])) {
-                if ($_SESSION['login'] == 1) {
-                    $filehandler = new Filehandler($storage);
-                    $filehandler->editFile();
-                    $files = scandir('C:/xampp/htdocs/gallery/images');
-                    foreach ($files as $file) {
-                        $file = 'C:/xampp/htdocs/gallery/images/' . $file;
-                        if ($file == $_POST['current_image']) {
-                            unlink($file);
-                        }
+                $filehandler = new Filehandler($storage);
+                $filehandler->editFile();
+                $files = scandir('C:/xampp/htdocs/gallery/images');
+                foreach ($files as $file) {
+                    $file = 'C:/xampp/htdocs/gallery/images/' . $file;
+                    if ($file == $_POST['current_image']) {
+                        unlink($file);
                     }
-                } else {
-                    echo 'Sie müssen eingeloggt sein um Änderungen vornehmen zu können.';
-                }
+                }            
             }
 
             if (isset($_POST['submit_edit_gallery_button'])) {
-                if ($_SESSION['login'] == 1) {
-                    $gallery = new Entry();
-                    $gallery->setID($_POST['edit_gallery_id']);
-                    $gallery->setName($_POST['edit_gallery_name']);
-                    $gallery->setDesc($_POST['edit_gallery_desc']);
-                    $storage->editGallery($gallery);
-                } else {
-                    echo 'Sie müssen eingeloggt sein um Änderungen vornehmen zu können.';
-                }
+                $gallery = new Entry();
+                $gallery->setID($_POST['edit_gallery_id']);
+                $gallery->setName($_POST['edit_gallery_name']);
+                $gallery->setDesc($_POST['edit_gallery_desc']);
+                $storage->editGallery($gallery);        
             }
             $view->galleryList($entries);
 

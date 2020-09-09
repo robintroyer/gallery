@@ -82,19 +82,18 @@ class View
         ob_start();
         echo '<h1>' . $gallery->getName() . '</h1>';
         echo '<p>' . $gallery->getDesc() . '</p>';
-        $this->form->newImageForm($gallery->getID());
-        $edit_button = '<input type="submit" name="edit_gallery_button" value="Bearbeiten">';
-        $delete_button = '<input type="submit" name="delete_gallery_button" value="Löschen">';
-        echo '<form method="post">' . $edit_button . $delete_button . '</form>';
+        if ($_SESSION['login'] == 1) {
+            $this->form->newImageForm($gallery->getID());
+            $edit_button = '<input type="submit" name="edit_gallery_button" value="Bearbeiten">';
+            $delete_button = '<input type="submit" name="delete_gallery_button" value="Löschen">';
+            echo '<form method="post">' . $edit_button . $delete_button . '</form>';
+        }
+        
         if (isset($_POST['edit_gallery_button'])) {
             $this->form->showEditGalleryForm($gallery);
         }
         if (isset($_POST['delete_gallery_button'])) {
-            if ($_SESSION['login'] == 1) {
-                $this->storage->deleteGallery($gallery->getID());
-            } else {
-                echo 'Sie müssen eingeloggt sein um Änderungen vornehmen zu können.';
-            }
+            $this->storage->deleteGallery($gallery->getID());
         }
         $images = $this->showImagesDropdown($gallery->getID());
         echo '
@@ -111,9 +110,17 @@ class View
                         <h4>' . $image->getTitle() . '</h4>
                         <p class="card-text">' . $image->getDesc() . '</p>
                         <input type="hidden" value="' . $image->getID() . '" name="image_id">
-                        <input type="submit" value="Bearbeiten" name="edit_image">
+                        <input ';
+                        if ($_SESSION['login'] == 0) {
+                            echo 'disabled ';
+                        }
+                        echo 'type="submit" value="Bearbeiten" name="edit_image">
                         <input type="hidden" value="' . $image->getImage() . '" name="current_image">
-                        <input type="submit" value="Löschen" name="delete_image">
+                        <input ';
+                        if ($_SESSION['login'] == 0) {
+                            echo 'disabled ';
+                        }
+                        echo 'type="submit" value="Löschen" name="delete_image">
                     </div>
                 </div>
             </form>';
@@ -127,22 +134,17 @@ class View
         }
         if (isset($_POST['delete_image'])) {
             unset($_POST['delete_image']);
-            if ($_SESSION['login'] == 1) {
-                $files = scandir('C:/xampp/htdocs/gallery/images');
-                foreach ($files as $file) {
-                    $file = 'C:/xampp/htdocs/gallery/images/' . $file;
-                    // echo $file . '<br />';
-                    // echo $image->getImage() . '<br />';
-                    if ($file == $_POST['current_image']) {
-                        unlink($file);
-                    }
+            $files = scandir('C:/xampp/htdocs/gallery/images');
+            foreach ($files as $file) {
+                $file = 'C:/xampp/htdocs/gallery/images/' . $file;
+                if ($file == $_POST['current_image']) {
+                    unlink($file);
                 }
-                $this->storage->deleteImage($_POST['image_id']);
-                ob_end_clean();
-                $this->showGallery($gallery);
-            } else {
-                echo 'Sie müssen eingeloggt sein um Änderungen vornehmen zu können.';
             }
+            $this->storage->deleteImage($_POST['image_id']);
+            ob_end_clean();
+            $this->showGallery($gallery);
+            
         }
     }  
 }
