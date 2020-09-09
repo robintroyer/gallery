@@ -112,7 +112,7 @@ class View
                         <p class="card-text">' . $image->getDesc() . '</p>
                         <input type="hidden" value="' . $image->getID() . '" name="image_id">
                         <input type="submit" value="Bearbeiten" name="edit_image">
-                        <input type="hidden" value="' . $image->getImage() . '" name="image_to_delete">
+                        <input type="hidden" value="' . $image->getImage() . '" name="current_image">
                         <input type="submit" value="Löschen" name="delete_image">
                     </div>
                 </div>
@@ -131,9 +131,9 @@ class View
                 $files = scandir('C:/xampp/htdocs/gallery/images');
                 foreach ($files as $file) {
                     $file = 'C:/xampp/htdocs/gallery/images/' . $file;
-                    echo $file . '<br />';
+                    // echo $file . '<br />';
                     // echo $image->getImage() . '<br />';
-                    if ($file == $_POST['image_to_delete']) {
+                    if ($file == $_POST['current_image']) {
                         unlink($file);
                     }
                 }

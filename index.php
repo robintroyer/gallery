@@ -35,15 +35,22 @@
             $view = new View($storage, $form);
             $form->newGalleryForm();
             $entries = $storage->getGalleries(0);
-            $view->galleryList($entries);
             if (isset($_POST['edit_button'])) {
                 if ($_SESSION['login'] == 1) {
                     $filehandler = new Filehandler($storage);
-                    $filehandler->editFile();    
+                    $filehandler->editFile();
+                    $files = scandir('C:/xampp/htdocs/gallery/images');
+                    foreach ($files as $file) {
+                        $file = 'C:/xampp/htdocs/gallery/images/' . $file;
+                        if ($file == $_POST['current_image']) {
+                            unlink($file);
+                        }
+                    }
                 } else {
                     echo 'Sie müssen eingeloggt sein um Änderungen vornehmen zu können.';
                 }
             }
+
             if (isset($_POST['submit_edit_gallery_button'])) {
                 if ($_SESSION['login'] == 1) {
                     $gallery = new Entry();
@@ -55,6 +62,8 @@
                     echo 'Sie müssen eingeloggt sein um Änderungen vornehmen zu können.';
                 }
             }
+            $view->galleryList($entries);
+
         ?>
     </body>
 </html>

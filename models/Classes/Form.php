@@ -75,8 +75,9 @@ class Form {
         $input_gallery_id = '<input type="hidden" name="edit_gallery_id" value="' . $gallery_id . '">';
         $upload = '<input type="file" name="edit_upload" value="' . $image->getImage() . '">';
         $edit_button = '<input type="submit" name="edit_button" value="hochladen">';
+        $hidden_current_image = '<input type="hidden" name="current_image" value="' . $image->getImage() . '">';
         echo '<form method="post" enctype="multipart/form-data">' . $input_title . $input_desc
-        . $input_id . $input_gallery_id . $upload . $edit_button . '</form>';
+        . $input_id . $input_gallery_id . $upload . $hidden_current_image . $edit_button . '</form>';
     }
     
 }
